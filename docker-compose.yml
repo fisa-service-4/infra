@@ -89,7 +89,7 @@ services:
       test: ["CMD", "healthcheck.sh"]
       interval: 30s
       timeout: 10s
-      retries: 20
+      retries: 30
     volumes:
       - oracle_bank_data:/opt/oracle/oradata
 
@@ -107,7 +107,7 @@ services:
       test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
-      retries: 20
+      retries: 30
     volumes:
       - oracle_stock_data:/opt/oracle/oradata
 
@@ -125,7 +125,7 @@ services:
       test: ["CMD", "healthcheck.sh"]
       interval: 30s
       timeout: 10s
-      retries: 10
+      retries: 30
     volumes:
       - oracle_card_data:/opt/oracle/oradata
 
@@ -143,7 +143,7 @@ services:
       test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
-      retries: 20
+      retries: 30
     volumes:
       - oracle_transaction_data:/opt/oracle/oradata
 
