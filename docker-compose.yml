@@ -80,13 +80,13 @@ services:
     container_name: oracle-bank
     restart: unless-stopped
     ports:
-      - "1521:1521"
+      - "1524:1521"
     environment:
       ORACLE_PASSWORD: 1234
-      APP_USER: finance
-      APP_USER_PASSWORD: 1234
+      APP_USER: BANK
+      APP_USER_PASSWORD: bank123
     healthcheck:
-      test: [ "CMD", "healthcheck.sh" ]
+      test: ["CMD", "healthcheck.sh"]
       interval: 30s
       timeout: 10s
       retries: 20
@@ -111,7 +111,23 @@ services:
     volumes:
       - oracle_stock_data:/opt/oracle/oradata
 
-  #oracle-card
+  oracle-card:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-card
+    restart: unless-stopped
+    ports:
+      - "1525:1521"
+    environment:
+      ORACLE_PASSWORD: 1234
+      APP_USER: CARD
+      APP_USER_PASSWORD: card123
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - oracle_card_data:/opt/oracle/oradata
 
   oracle-transaction:
     image: gvenzl/oracle-xe:21-slim
@@ -231,7 +247,8 @@ services:
     depends_on:
       oracle-bank:
         condition: service_healthy
-      #kafka
+      oracle-card:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: test
     ports:
@@ -282,6 +299,7 @@ volumes:
   postgres_vector_data:
 
   oracle_bank_data:
+  oracle_card_data:
   oracle_stock_data:
   oracle_transaction_data:
 
