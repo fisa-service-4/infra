@@ -89,7 +89,7 @@ services:
       test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
-      retries: 10
+      retries: 20
     volumes:
       - oracle_bank_data:/opt/oracle/oradata
 
@@ -107,7 +107,7 @@ services:
       test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
-      retries: 10
+      retries: 20
     volumes:
       - oracle_stock_data:/opt/oracle/oradata
 
@@ -127,7 +127,7 @@ services:
       test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
-      retries: 10
+      retries: 20
     volumes:
       - oracle_transaction_data:/opt/oracle/oradata
 
@@ -167,14 +167,14 @@ services:
   # AI
   # =========================
 
-#  ollama:
-#    image: ollama/ollama
-#    container_name: ollama
-#    restart: unless-stopped
-#    ports:
-#      - "11434:11434"
-#    volumes:
-#      - ollama_data:/root/.ollama
+  #  ollama:
+  #    image: ollama/ollama
+  #    container_name: ollama
+  #    restart: unless-stopped
+  #    ports:
+  #      - "11434:11434"
+  #    volumes:
+  #      - ollama_data:/root/.ollama
 
   # =========================
   # APPLICATIONS
@@ -187,20 +187,26 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_AI_ORIGIN=http://service-ai-server:8000
+      - NEXT_PUBLIC_API_ORIGIN=http://service-backend:8080
+      - NEXT_PUBLIC_MYDATA_ORIGIN=http://mydata-server:8084
 
-#  service-ai-server:
-#    build:
-#      context: ../service-ai-server
-#    container_name: service-ai-server
-#    restart: unless-stopped
-#    depends_on:
-#      - postgres-analytics
-#      - postgres-vector
-#      - ollama
-#    env_file:
-#      - ../service-ai-server/.env.test
-#    ports:
-#      - "8000:8000"
+  service-ai-server:
+    build:
+      context: ../service-ai-server
+    container_name: service-ai-server
+    restart: unless-stopped
+    depends_on:
+      - postgres-analytics
+      - postgres-vector
+    #      - ollama
+    env_file:
+      - ../service-ai-server/.env.test
+    ports:
+      - "8000:8000"
+    volumes:
+      - huggingface_cache:/root/.cache/huggingface
 
   service-backend:
     build:
@@ -209,8 +215,8 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres-operational
-#      - postgres-analytics
-#      - postgres-log
+      #      - postgres-analytics
+      #      - postgres-log
       - redis
     environment:
       SPRING_PROFILES_ACTIVE: test
@@ -278,5 +284,7 @@ volumes:
   oracle_bank_data:
   oracle_stock_data:
   oracle_transaction_data:
+
+  huggingface_cache:
 
   ollama_data:
