@@ -1,0 +1,85 @@
+services:
+
+  # =========================
+  # DATABASE
+  # =========================
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: finance
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  # =========================
+  # APPLICATIONS
+  # =========================
+
+  service-backend:
+    build:
+      context: ../service-backend
+    container_name: service-backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: app
+    ports:
+      - "8080:8080"
+
+  service-ai-server:
+    build:
+      context: ../service-ai-server
+    container_name: service-ai-server
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ../service-ai-server/.env.app
+    ports:
+      - "8000:8000"
+
+  mydata-server:
+    build:
+      context: ../mydata-server
+    container_name: mydata-server
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: app
+    ports:
+      - "8084:8084"
+
+  service-frontend:
+    build:
+      context: ../service-frontend
+    container_name: service-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_AI_ORIGIN=http://service-ai-server:8000
+      - NEXT_PUBLIC_API_ORIGIN=http://service-backend:8080
+      - NEXT_PUBLIC_MYDATA_ORIGIN=http://mydata-server:8084
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: fintech-net
+    external: true
