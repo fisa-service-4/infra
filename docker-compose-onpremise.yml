@@ -1,5 +1,4 @@
 services:
-
   # =========================
   # DATABASE
   # =========================
@@ -155,21 +154,21 @@ services:
       - NEXT_PUBLIC_API_ORIGIN=http://service-backend:8080
       - NEXT_PUBLIC_MYDATA_ORIGIN=http://mydata-server:8084
 
-  # service-ai-server:
-  #   build:
-  #     context: ../service-ai-server
-  #   container_name: service-ai-server
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - postgres-analytics
-  #     - postgres-vector
-  #   #      - ollama
-  #   env_file:
-  #     - ../service-ai-server/.env.onpremise
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - huggingface_cache:/root/.cache/huggingface
+  service-ai-server:
+    build:
+      context: ../service-ai-server
+    container_name: service-ai-server
+    restart: unless-stopped
+    depends_on:
+      - postgres-analytics
+      - postgres-vector
+    #      - ollama
+    env_file:
+      - ../service-ai-server/.env.onpremise
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - huggingface_cache:/root/.cache/huggingface
 
   service-backend:
     build:
