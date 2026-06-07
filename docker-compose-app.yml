@@ -89,4 +89,3 @@ volumes:
 networks:
   default:
     name: fintech-net
-    external: true

@@ -107,4 +107,3 @@ volumes:
 networks:
   default:
     name: fintech-net
-    driver: bridge
