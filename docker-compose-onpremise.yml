@@ -210,6 +210,8 @@ services:
       #kafka
     environment:
       SPRING_PROFILES_ACTIVE: onpremise
+    env_file:
+      - ../stock-server/.env
     ports:
       - "8082:8082"
 
