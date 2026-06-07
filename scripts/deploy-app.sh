@@ -4,7 +4,8 @@ set -e
 
 cd ~/infra
 
-git pull origin feat/2infra
+git fetch origin
+git reset --hard origin/feat/2infra
 
 docker compose -f docker-compose-app.yml pull
 
