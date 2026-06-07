@@ -52,7 +52,7 @@ services:
     depends_on:
       - postgres
     env_file:
-      - ../service-ai-server/.env.app
+      - ./service-ai-server.env
     ports:
       - "8000:8000"
 
