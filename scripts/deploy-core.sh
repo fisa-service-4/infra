@@ -4,7 +4,7 @@ set -e
 
 cd ~/infra
 
-git pull origin develop
+git pull origin feat/2infra
 
 docker compose -f docker-compose-core.yml pull
 
