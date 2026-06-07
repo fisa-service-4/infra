@@ -85,7 +85,7 @@ services:
       APP_USER: BANK
       APP_USER_PASSWORD: bank123
     healthcheck:
-      test: ["CMD", "healthcheck.sh"]
+      test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
       retries: 20
@@ -178,7 +178,7 @@ services:
     depends_on:
       - postgres-operational
       #      - postgres-analytics
-      #      - postgres-log
+      - postgres-log
       - redis
     environment:
       SPRING_PROFILES_ACTIVE: onpremise
@@ -210,8 +210,8 @@ services:
       #kafka
     environment:
       SPRING_PROFILES_ACTIVE: onpremise
-    env_file:
-      - ../stock-server/.env
+    #    env_file:
+    #      - ../stock-server/.env
     ports:
       - "8082:8082"
 
