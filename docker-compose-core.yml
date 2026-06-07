@@ -60,8 +60,9 @@ services:
   # =========================
 
   bank-server:
-    build:
-      context: ../bank-server
+    image: ghcr.io/fisa-service-4/bank-server:develop
+#    build:
+#      context: ../bank-server
     container_name: bank-server
     restart: unless-stopped
     depends_on:
@@ -73,8 +74,9 @@ services:
       - "8081:8081"
 
   stock-server:
-    build:
-      context: ../stock-server
+    image: ghcr.io/fisa-service-4/stock-server:develop
+#    build:
+#      context: ../stock-server
     container_name: stock-server
     restart: unless-stopped
     depends_on:
@@ -86,8 +88,9 @@ services:
       - "8082:8082"
 
   transaction-server:
-    build:
-      context: ../transaction-server
+    image: ghcr.io/fisa-service-4/transaction-server:develop
+#    build:
+#      context: ../transaction-server
     container_name: transaction-server
     restart: unless-stopped
     depends_on:

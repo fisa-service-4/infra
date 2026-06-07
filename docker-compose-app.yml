@@ -30,8 +30,9 @@ services:
   # =========================
 
   service-backend:
-    build:
-      context: ../service-backend
+    image: ghcr.io/fisa-service-4/service-backend:develop
+#    build:
+#      context: ../service-backend
     container_name: service-backend
     restart: unless-stopped
     depends_on:
@@ -43,8 +44,9 @@ services:
       - "8080:8080"
 
   service-ai-server:
-    build:
-      context: ../service-ai-server
+    image: ghcr.io/fisa-service-4/service-ai-server:develop
+#    build:
+#      context: ../service-ai-server
     container_name: service-ai-server
     restart: unless-stopped
     depends_on:
@@ -55,8 +57,9 @@ services:
       - "8000:8000"
 
   mydata-server:
-    build:
-      context: ../mydata-server
+    image: ghcr.io/fisa-service-4/mydata-server:develop
+#    build:
+#      context: ../mydata-server
     container_name: mydata-server
     restart: unless-stopped
     environment:
@@ -65,16 +68,18 @@ services:
       - "8084:8084"
 
   service-frontend:
-    build:
-      context: ../service-frontend
+    image: ghcr.io/fisa-service-4/service-frontend:develop
+#    build:
+#      context: ../service-frontend
     container_name: service-frontend
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_AI_ORIGIN=http://service-ai-server:8000
-      - NEXT_PUBLIC_API_ORIGIN=http://service-backend:8080
-      - NEXT_PUBLIC_MYDATA_ORIGIN=http://mydata-server:8084
+      - AI_SERVER_URL=http://service-ai-server:8000
+      - BACKEND_URL=http://service-backend:8080
+      - MYDATA_URL=http://mydata-server:8084
+      - TRANSACTION_URL=http://10.10.4.107:8083
 
 volumes:
   postgres_data:
