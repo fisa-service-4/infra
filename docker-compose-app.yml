@@ -1,0 +1,87 @@
+services:
+
+  # =========================
+  # DATABASE
+  # =========================
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: finance
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  # =========================
+  # APPLICATIONS
+  # =========================
+
+  service-backend:
+    image: ghcr.io/fisa-service-4/service-backend:develop
+#    build:
+#      context: ../service-backend
+    container_name: service-backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./secrets/firebase.json:/app/firebase.json:ro
+
+  service-ai-server:
+    image: ghcr.io/fisa-service-4/service-ai-server:develop
+#    build:
+#      context: ../service-ai-server
+    container_name: service-ai-server
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ./service-ai-server.env
+    ports:
+      - "8000:8000"
+
+  mydata-server:
+    image: ghcr.io/fisa-service-4/mydata-server:develop
+#    build:
+#      context: ../mydata-server
+    container_name: mydata-server
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: app
+    ports:
+      - "8084:8084"
+
+  service-frontend:
+    image: ghcr.io/fisa-service-4/service-frontend:develop
+#    build:
+#      context: ../service-frontend
+    container_name: service-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - AI_SERVER_URL=http://service-ai-server:8000
+      - BACKEND_URL=http://service-backend:8080
+      - MYDATA_URL=http://mydata-server:8084
+      - TRANSACTION_URL=http://10.10.4.107:8083
+
+volumes:
+  postgres_data:
