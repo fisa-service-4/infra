@@ -84,6 +84,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: core
+    env_file:
+      - ./stock-server.env
     ports:
       - "8082:8082"
 
