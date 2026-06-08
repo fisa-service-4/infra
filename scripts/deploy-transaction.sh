@@ -2,8 +2,7 @@
 
 cd ~/infra
 
-git fetch origin
-git reset --hard origin/feat/2infra
+git pull origin develop
 
 docker compose -f docker-compose-core.yml pull transaction-server
 

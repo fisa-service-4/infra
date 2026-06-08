@@ -3,7 +3,7 @@
 cd ~/infra
 
 git fetch origin
-git reset --hard origin/feat/2infra
+git reset --hard origin/develop
 
 docker compose -f docker-compose-core.yml pull bank-server
 
