@@ -1,6 +1,4 @@
--- USER_PROFILE 시드 (user_id 22~31)
--- 00_alter_schema.sql 실행 후 resident_number_front, telecom 컬럼이 존재해야 함
--- ON CONFLICT (user_id): PK 기반 재실행 보호
+SET search_path TO operational;
 
 INSERT INTO user_profile (user_id, freelancer_yn, job_type, resident_number_front, telecom)
 SELECT u.user_id, v.freelancer_yn, v.job_type, v.resident_number_front, v.telecom

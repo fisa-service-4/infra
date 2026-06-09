@@ -1,4 +1,5 @@
--- USERS 시드 (user_id 22~31)
+SET search_path TO operational;
+
 -- password_hash: BCrypt("Test1234!") = $2b$10$GtYeMhO44tVhRHMulLRw2OcWUR1YFpRm3vVT1amLQmBCxzLcHDA8.
 -- ON CONFLICT (firebase_uid): firebase_uid UNIQUE 제약 기반 재실행 보호
 

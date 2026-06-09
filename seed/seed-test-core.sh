@@ -12,7 +12,8 @@ run_oracle() {
     local user_pass=$1
     local file=$2
     echo "  [Oracle] $(basename "$file") as ${user_pass%%/*}..."
-    docker exec -i "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB" < "$file"
+    docker exec -i -e NLS_LANG="KOREAN_KOREA.AL32UTF8" \
+        "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB" < "$file"
 }
 
 echo "=== [TEST-CORE] Oracle Seed ==="

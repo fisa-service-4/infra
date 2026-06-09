@@ -1,3 +1,5 @@
+SET search_path TO operational;
+
 -- LINKED_FINANCIAL_ACCOUNT 시드 (은행 20건 + 증권 20건 = 40건)
 -- external_account_id: BANK_ACCOUNT.ACCOUNT_ID (2001~2020) / SECURITIES_ACCOUNT.SECURITIES_ACCOUNT_ID (1001~1020)
 -- UNIQUE 제약 없음 → WHERE NOT EXISTS 로 재실행 보호

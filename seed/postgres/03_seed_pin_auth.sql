@@ -1,3 +1,5 @@
+SET search_path TO operational;
+
 -- PIN_AUTH 시드 (user_id 22~31)
 -- PIN: 192837 (모든 계정 동일)
 -- pin_hash: BCrypt("192837") = $2b$10$k7rCggSnA6fOS/P4ufgsM.ZnDAOG.GcPmibZECFLeH0YE2igQNGye

@@ -1,3 +1,5 @@
+SET search_path TO operational;
+
 -- VIRTUAL_SALARY_SETTING 시드 (user_id 22~31)
 -- ON CONFLICT (user_id): PK 기반 재실행 보호
 

@@ -17,7 +17,8 @@ run_oracle() {
     local user_pass=$1
     local file=$2
     echo "  [Oracle] $(basename "$file") as ${user_pass%%/*}..."
-    docker exec -i "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB" < "$file"
+    docker exec -i -e NLS_LANG="KOREAN_KOREA.AL32UTF8" \
+        "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB" < "$file"
 }
 
 echo "=== [LOCAL] PostgreSQL Seed (postgres-operational) ==="
@@ -25,7 +26,6 @@ for f in "$SCRIPT_DIR"/postgres/*.sql; do
     echo "  [PG] $(basename "$f")..."
     docker exec -i "$PG_CONTAINER" psql -U "$PG_USER" -d "$PG_DB" -f - < "$f"
 done
-# postgres-analytics / postgres-log / postgres-vector 는 현재 시드 데이터 없음
 
 echo "=== [LOCAL] Oracle Seed ==="
 run_oracle "BANK/bank123"   "$SCRIPT_DIR/oracle/01_seed_bank.sql"
