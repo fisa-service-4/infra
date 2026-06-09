@@ -3,15 +3,11 @@ WHENEVER SQLERROR EXIT FAILURE;
 
 -- USER_MASTER 10 rows (user_id 22~31)
 -- USER_ACCOUNT_MAPPING 40 rows (BANK 20 + STOCK 20)
--- UNISTR used for Korean names to avoid NLS encoding issues
--- \AE40\BBFC\C900=김민준 \C774\C11C\C5F0=이서연 \BC15\C9C0\D638=박지호
--- \CD5C\C720\C9C4=최유진 \C815\C218\D604=정수현 \AC15\C9C0\C740=강지은
--- \C870\BBFC\C11C=조민서 \C724\D558\C900=윤하준 \C784\CC44\C6D0=임채원
--- \D55C\C608\C9C4=한예진
+-- UNISTR for Korean names; u_id alias used (uid is Oracle reserved word)
 
 MERGE INTO user_master t
 USING (
-    SELECT 22 uid, 22 xuid, 'test_firebase_001' fbuid, UNISTR('\AE40\BBFC\C900') uname, '01012345678' phone FROM DUAL UNION ALL
+    SELECT 22 u_id, 22 xu_id, 'test_firebase_001' fbuid, UNISTR('\AE40\BBFC\C900') uname, '01012345678' phone FROM DUAL UNION ALL
     SELECT 23, 23, 'test_firebase_002', UNISTR('\C774\C11C\C5F0'), '01023456789' FROM DUAL UNION ALL
     SELECT 24, 24, 'test_firebase_003', UNISTR('\BC15\C9C0\D638'), '01034567890' FROM DUAL UNION ALL
     SELECT 25, 25, 'test_firebase_004', UNISTR('\CD5C\C720\C9C4'), '01045678901' FROM DUAL UNION ALL
@@ -21,10 +17,10 @@ USING (
     SELECT 29, 29, 'test_firebase_008', UNISTR('\C724\D558\C900'), '01089012345' FROM DUAL UNION ALL
     SELECT 30, 30, 'test_firebase_009', UNISTR('\C784\CC44\C6D0'), '01090123456' FROM DUAL UNION ALL
     SELECT 31, 31, 'test_firebase_010', UNISTR('\D55C\C608\C9C4'), '01011223344' FROM DUAL
-) s ON (t.user_id = s.uid)
+) s ON (t.user_id = s.u_id)
 WHEN NOT MATCHED THEN
     INSERT (user_id, x_user_id, firebase_uid, user_name, phone_number, linked_at)
-    VALUES (s.uid, s.xuid, s.fbuid, s.uname, s.phone, SYSTIMESTAMP);
+    VALUES (s.u_id, s.xu_id, s.fbuid, s.uname, s.phone, SYSTIMESTAMP);
 
 COMMIT;
 
@@ -32,7 +28,7 @@ COMMIT;
 
 MERGE INTO user_account_mapping t
 USING (
-    SELECT 2001 acid, 'BANK'  atype, 22 uid, 22 xuid FROM DUAL UNION ALL
+    SELECT 2001 acid, 'BANK'  atype, 22 u_id, 22 xu_id FROM DUAL UNION ALL
     SELECT 2002, 'BANK',  22, 22 FROM DUAL UNION ALL
     SELECT 2003, 'BANK',  23, 23 FROM DUAL UNION ALL
     SELECT 2004, 'BANK',  23, 23 FROM DUAL UNION ALL
@@ -75,7 +71,7 @@ USING (
 ) s ON (t.account_id = s.acid AND t.account_type = s.atype)
 WHEN NOT MATCHED THEN
     INSERT (account_id, account_type, user_id, x_user_id)
-    VALUES (s.acid, s.atype, s.uid, s.xuid);
+    VALUES (s.acid, s.atype, s.u_id, s.xu_id);
 
 COMMIT;
 EXIT;
