@@ -7,7 +7,7 @@ WHENEVER SQLERROR EXIT FAILURE;
 
 MERGE INTO BANK_ACCOUNT t
 USING (
-    SELECT 2001 AS aid, 22 AS uid, '088' AS bcode, '110-022-000001'  AS anum, '신한 입출금계좌' AS aname, 2250000 AS bal FROM DUAL UNION ALL
+    SELECT 2001 aid, 22 uid, '088' bcode, '110-022-000001'  anum, '신한 입출금계좌' aname, 2250000 bal FROM DUAL UNION ALL
     SELECT 2002,         22,        '020',           '1002-022-000001', '우리 입출금계좌',            780000        FROM DUAL UNION ALL
     SELECT 2003,         23,        '088',           '110-023-000001',  '신한 입출금계좌',            1120000       FROM DUAL UNION ALL
     SELECT 2004,         23,        '020',           '1002-023-000001', '우리 입출금계좌',            550000        FROM DUAL UNION ALL

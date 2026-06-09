@@ -5,7 +5,7 @@ SET search_path TO operational;
 
 INSERT INTO virtual_salary_setting
     (user_id, target_salary, payday, emergency_target_amount,
-     investment_amount, emergency_amount, priority_order, updated_at)
+     investment_ratio, emergency_ratio, priority_order, updated_at)
 SELECT u.user_id, v.target_salary, v.payday, v.emergency_target_amount,
        NULL, NULL, NULL, NOW()
 FROM (

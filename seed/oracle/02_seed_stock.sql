@@ -7,7 +7,7 @@ WHENEVER SQLERROR EXIT FAILURE;
 
 MERGE INTO SECURITIES_ACCOUNT t
 USING (
-    SELECT 1001 AS aid, 22 AS uid, '243' AS bcode, '22000001-01'      AS anum, '한국투자 위탁계좌' AS aname, 2636923 AS cb, 2636923 AS wb FROM DUAL UNION ALL
+    SELECT 1001 aid, 22 uid, '243' bcode, '22000001-01'      anum, '한국투자 위탁계좌' aname, 2636923 cb, 2636923 wb FROM DUAL UNION ALL
     SELECT 1002,         22,        '247',           '302-0022-0001-01', 'NH투자 위탁계좌',              1276205,   1276205           FROM DUAL UNION ALL
     SELECT 1003,         23,        '243',           '23000001-01',      '한국투자 위탁계좌',             1173187,   1173187           FROM DUAL UNION ALL
     SELECT 1004,         23,        '247',           '302-0023-0001-01', 'NH투자 위탁계좌',              2146309,   2146309           FROM DUAL UNION ALL
@@ -43,7 +43,7 @@ COMMIT;
 
 MERGE INTO STOCK_HOLDING t
 USING (
-    SELECT 1001 AS said, '000660' AS scode,  2 AS qty,  812061 AS avg_p,  1624122 AS total_p FROM DUAL UNION ALL
+    SELECT 1001 said, '000660' scode,  2 qty,  812061 avg_p,  1624122 total_p FROM DUAL UNION ALL
     SELECT 1001,         '005930',           95,          35693,            3390835             FROM DUAL UNION ALL
     SELECT 1001,         '035720',          260,           3262,             848120             FROM DUAL UNION ALL
     SELECT 1002,         '005930',           29,          35693,            1035097             FROM DUAL UNION ALL

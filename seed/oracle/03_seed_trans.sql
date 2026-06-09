@@ -4,7 +4,7 @@ WHENEVER SQLERROR EXIT FAILURE;
 -- USER_MASTER (10 rows)
 MERGE INTO user_master t
 USING (
-    SELECT 22 AS uid, 22 AS xuid, 'test_firebase_001' AS fbuid, '김민준' AS uname, '01012345678' AS phone FROM DUAL UNION ALL
+    SELECT 22 uid, 22 xuid, 'test_firebase_001' fbuid, '김민준' uname, '01012345678' phone FROM DUAL UNION ALL
     SELECT 23,        23,          'test_firebase_002',          '이서연',        '01023456789'                  FROM DUAL UNION ALL
     SELECT 24,        24,          'test_firebase_003',          '박지호',        '01034567890'                  FROM DUAL UNION ALL
     SELECT 25,        25,          'test_firebase_004',          '최유진',        '01045678901'                  FROM DUAL UNION ALL
@@ -24,7 +24,7 @@ COMMIT;
 -- USER_ACCOUNT_MAPPING (40 rows: BANK 20 + STOCK 20)
 MERGE INTO user_account_mapping t
 USING (
-    SELECT 2001 AS acid, 'BANK'  AS atype, 22 AS uid, 22 AS xuid FROM DUAL UNION ALL
+    SELECT 2001 acid, 'BANK'  atype, 22 uid, 22 xuid FROM DUAL UNION ALL
     SELECT 2002,         'BANK',            22,         22              FROM DUAL UNION ALL
     SELECT 2003,         'BANK',            23,         23              FROM DUAL UNION ALL
     SELECT 2004,         'BANK',            23,         23              FROM DUAL UNION ALL
