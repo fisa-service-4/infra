@@ -177,7 +177,7 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres-operational
-      #      - postgres-analytics
+      - postgres-analytics
       - postgres-log
       - redis
     environment:
