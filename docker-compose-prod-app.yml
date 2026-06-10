@@ -7,7 +7,7 @@ services:
   # =========================
 
   service-frontend:
-    image: ghcr.io/fisa-service-4/service-frontend:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/service-frontend:${IMAGE_TAG:-develop}
     container_name: service-frontend
     restart: unless-stopped
     ports:
@@ -38,7 +38,7 @@ services:
   # =========================
 
   service-backend:
-    image: ghcr.io/fisa-service-4/service-backend:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/service-backend:${IMAGE_TAG:-develop}
     container_name: service-backend
     restart: unless-stopped
     ports:
@@ -66,7 +66,7 @@ services:
   # =========================
 
   service-ai-server:
-    image: ghcr.io/fisa-service-4/service-ai-server:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/service-ai-server:${IMAGE_TAG:-develop}
     container_name: service-ai-server
     restart: unless-stopped
     ports:

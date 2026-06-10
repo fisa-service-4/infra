@@ -7,7 +7,7 @@ services:
   # =========================
 
   mydata-server:
-    image: ghcr.io/fisa-service-4/mydata-server:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/mydata-server:${IMAGE_TAG:-develop}
     container_name: mydata-server
     restart: unless-stopped
     ports:

@@ -69,7 +69,7 @@ services:
   # =========================
 
   bank-server:
-    image: ghcr.io/fisa-service-4/bank-server:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/bank-server:${IMAGE_TAG:-develop}
     container_name: bank-server
     restart: unless-stopped
     ports:
@@ -98,7 +98,7 @@ services:
   # =========================
 
   stock-server:
-    image: ghcr.io/fisa-service-4/stock-server:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/stock-server:${IMAGE_TAG:-develop}
     container_name: stock-server
     restart: unless-stopped
     ports:
@@ -125,11 +125,11 @@ services:
       - core-net
 
   # =========================
-  # TRANSACTION SERVER (AWS → CORE 진입점)
+  # TRANSACTION SERVER (AWS ??CORE 진입??
   # =========================
 
   transaction-server:
-    image: ghcr.io/fisa-service-4/transaction-server:${IMAGE_TAG:-latest}
+    image: ghcr.io/fisa-service-4/transaction-server:${IMAGE_TAG:-develop}
     container_name: transaction-server
     restart: unless-stopped
     ports:
