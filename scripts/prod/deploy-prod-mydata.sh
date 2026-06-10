@@ -10,8 +10,7 @@ COMPOSE_FILE="docker-compose-prod-mydata.yml"
 cd "$INFRA_DIR"
 
 echo "[INFO] Fetching latest infra config from main..."
-git fetch origin
-git reset --hard origin/develop
+git pull
 
 echo "[INFO] Checking required env files..."
 if [ ! -f "envs/mydata.env" ]; then

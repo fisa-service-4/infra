@@ -10,8 +10,7 @@ COMPOSE_FILE="docker-compose-prod-core.yml"
 cd "$INFRA_DIR"
 
 echo "[INFO] Fetching latest infra config from main..."
-git fetch origin
-git reset --hard origin/develop
+git pull
 
 echo "[INFO] Checking required env files..."
 for f in envs/oracle.prod.env envs/stock.prod.env; do
@@ -30,7 +29,7 @@ docker compose -f "$COMPOSE_FILE" pull bank-server stock-server transaction-serv
 echo "[INFO] Starting Oracle and Kafka first..."
 docker compose -f "$COMPOSE_FILE" up -d oracle kafka
 
-echo "[INFO] Waiting for Oracle to become healthy (최�? 5�?..."
+echo "[INFO] Waiting for Oracle to become healthy (최�? 5�?..."
 for i in $(seq 1 30); do
   STATUS=$(docker inspect --format='{{.State.Health.Status}}' oracle 2>/dev/null || echo "starting")
   echo "  [${i}/30] Oracle status: $STATUS"

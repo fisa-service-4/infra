@@ -10,8 +10,7 @@ COMPOSE_FILE="docker-compose-prod-data.yml"
 cd "$INFRA_DIR"
 
 echo "[INFO] Fetching latest infra config from main..."
-git fetch origin
-git reset --hard origin/develop
+git pull
 
 echo "[INFO] Checking required env files..."
 for f in envs/redis.prod.env envs/postgres.prod.env; do
