@@ -12,12 +12,6 @@ cd "$INFRA_DIR"
 echo "[INFO] Fetching latest infra config from main..."
 git pull
 
-echo "[INFO] Checking required env files..."
-if [ ! -f "envs/mydata.env" ]; then
-  echo "[ERROR] Missing env file: envs/mydata.env (copy from envs/mydata.env.example and fill in values)"
-  exit 1
-fi
-
 echo "[INFO] Logging into GHCR..."
 echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
