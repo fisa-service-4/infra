@@ -16,7 +16,7 @@ services:
       - ./envs/redis.prod.env
     command: sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a $REDIS_PASSWORD ping | grep -q PONG"]
+      test: [ "CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep -q PONG" ]
       interval: 30s
       timeout: 10s
       retries: 3
