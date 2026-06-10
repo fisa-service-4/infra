@@ -12,9 +12,6 @@ cd "$INFRA_DIR"
 echo "[INFO] Fetching latest infra config from main..."
 git pull
 
-echo "[INFO] Logging into GHCR..."
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-
 echo "[INFO] Pulling latest images..."
 docker compose -f "$COMPOSE_FILE" pull
 

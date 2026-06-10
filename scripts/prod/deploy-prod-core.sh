@@ -20,16 +20,13 @@ for f in envs/oracle.prod.env envs/stock.prod.env; do
   fi
 done
 
-echo "[INFO] Logging into GHCR..."
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-
 echo "[INFO] Pulling latest application images..."
 docker compose -f "$COMPOSE_FILE" pull bank-server stock-server transaction-server
 
 echo "[INFO] Starting Oracle and Kafka first..."
 docker compose -f "$COMPOSE_FILE" up -d oracle kafka
 
-echo "[INFO] Waiting for Oracle to become healthy (최�? 5�?..."
+echo "[INFO] Waiting for Oracle to become healthy (최�? 5�?..."
 for i in $(seq 1 30); do
   STATUS=$(docker inspect --format='{{.State.Health.Status}}' oracle 2>/dev/null || echo "starting")
   echo "  [${i}/30] Oracle status: $STATUS"

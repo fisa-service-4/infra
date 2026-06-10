@@ -8,9 +8,6 @@ COMPOSE_FILE="docker-compose-prod-core.yml"
 
 cd "$INFRA_DIR"
 
-echo "[INFO] Logging into GHCR..."
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-
 echo "[INFO] Pulling latest application images..."
 docker compose -f "$COMPOSE_FILE" pull bank-server stock-server transaction-server
 

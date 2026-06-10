@@ -25,9 +25,6 @@ if [ ! -f "secrets/firebase.json" ]; then
   exit 1
 fi
 
-echo "[INFO] Logging into GHCR..."
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-
 echo "[INFO] Pulling latest images..."
 docker compose -f "$COMPOSE_FILE" pull
 
