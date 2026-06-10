@@ -1,0 +1,92 @@
+name: flon-app
+
+services:
+
+  # =========================
+  # FRONTEND
+  # =========================
+
+  service-frontend:
+    image: ghcr.io/fisa-service-4/service-frontend:${IMAGE_TAG:-latest}
+    container_name: service-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./envs/frontend.prod.env
+    depends_on:
+      service-backend:
+        condition: service_healthy
+      service-ai-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ > /dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - app-net
+
+  # =========================
+  # BACKEND
+  # =========================
+
+  service-backend:
+    image: ghcr.io/fisa-service-4/service-backend:${IMAGE_TAG:-latest}
+    container_name: service-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./envs/backend.prod.env
+    volumes:
+      - ./secrets/firebase.json:/app/firebase.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - app-net
+
+  # =========================
+  # AI SERVER
+  # =========================
+
+  service-ai-server:
+    image: ghcr.io/fisa-service-4/service-ai-server:${IMAGE_TAG:-latest}
+    container_name: service-ai-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./envs/ai.prod.env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

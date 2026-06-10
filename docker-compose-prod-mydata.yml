@@ -1,0 +1,33 @@
+name: flon-mydata
+
+services:
+
+  # =========================
+  # MYDATA SERVER
+  # =========================
+
+  mydata-server:
+    image: ghcr.io/fisa-service-4/mydata-server:${IMAGE_TAG:-latest}
+    container_name: mydata-server
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_PROFILES_ACTIVE: app
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8084/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - mydata-net
+
+networks:
+  mydata-net:
+    driver: bridge
