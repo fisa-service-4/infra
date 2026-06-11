@@ -162,6 +162,7 @@ services:
     depends_on:
       - postgres-analytics
       - postgres-vector
+      - postgres-log
     #      - ollama
     env_file:
       - ../service-ai-server/.env.onpremise
