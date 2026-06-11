@@ -55,7 +55,7 @@ set -e
 
 cd ~/infra
 
-git pull origin develop
+git pull origin feat/#9-set-aws-infra
 
 docker compose -f docker-compose-prod-core.yml pull
 
