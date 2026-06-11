@@ -61,8 +61,6 @@ services:
 
   bank-server:
     image: ghcr.io/fisa-service-4/bank-server:develop
-    #    build:
-    #      context: ../bank-server
     container_name: bank-server
     restart: unless-stopped
     depends_on:
@@ -75,8 +73,6 @@ services:
 
   stock-server:
     image: ghcr.io/fisa-service-4/stock-server:develop
-    #    build:
-    #      context: ../stock-server
     container_name: stock-server
     restart: unless-stopped
     depends_on:
@@ -93,12 +89,13 @@ services:
     image: ghcr.io/fisa-service-4/transaction-server:develop
     container_name: transaction-server
     restart: unless-stopped
-    network_mode: host
     depends_on:
       oracle:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: core
+    ports:
+      - "8083:8083"
 
 volumes:
   oracle_data:
