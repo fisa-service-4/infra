@@ -23,3 +23,38 @@ FROM (
 ) AS v(firebase_uid, target_salary, payday, emergency_target_amount)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 ON CONFLICT (user_id) DO NOTHING;
+
+
+INSERT INTO virtual_salary_setting (user_id, target_salary, payday, updated_at)
+SELECT u.user_id, 1500000, 25, NOW()
+FROM users u
+WHERE u.firebase_uid = 'test_firebase_001'
+ON CONFLICT (user_id) DO UPDATE SET target_salary = 1500000, payday = 25, updated_at = NOW();
+
+
+INSERT INTO virtual_salary_setting (user_id, target_salary, payday, updated_at)
+SELECT u.user_id, 1200000, 25, NOW()
+FROM users u
+WHERE u.firebase_uid = 'test_firebase_002'
+ON CONFLICT (user_id) DO UPDATE SET target_salary = 1200000, payday = 25, updated_at = NOW();
+
+
+INSERT INTO virtual_salary_setting (user_id, target_salary, payday, updated_at)
+SELECT u.user_id, 1800000, 25, NOW()
+FROM users u
+WHERE u.firebase_uid = 'test_firebase_004'
+ON CONFLICT (user_id) DO UPDATE SET target_salary = 1800000, payday = 25, updated_at = NOW();
+
+
+INSERT INTO virtual_salary_setting (user_id, target_salary, payday, updated_at)
+SELECT u.user_id, 1700000, 25, NOW()
+FROM users u
+WHERE u.firebase_uid = 'test_firebase_005'
+ON CONFLICT (user_id) DO UPDATE SET target_salary = 1700000, payday = 25, updated_at = NOW();
+
+
+INSERT INTO virtual_salary_setting (user_id, target_salary, payday, updated_at)
+SELECT u.user_id, 3000000, 25, NOW()
+FROM users u
+WHERE u.firebase_uid = 'test_firebase_007'
+ON CONFLICT (user_id) DO UPDATE SET target_salary = 3000000, payday = 25, updated_at = NOW();

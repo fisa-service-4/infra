@@ -16,6 +16,26 @@ FROM (
     VALUES
         ('test_firebase_001', 'BANK', '088', 2001::bigint, '110-0**-000001'),
         ('test_firebase_001', 'BANK', '020', 2002::bigint, '1002-0**-000001'),
+        ('test_firebase_001', 'BANK', '088', 2001::bigint, '110-0**-000001'),
+        ('test_firebase_001', 'BANK', '020', 2002::bigint, '1002-0**-000001'),
+        ('test_firebase_001', 'BANK', '088', 2003::bigint, '110-0**-000002'),
+        ('test_firebase_001', 'BANK', '088', 2004::bigint, '110-0**-000003'),
+        ('test_firebase_002', 'BANK', '088', 2005::bigint, '110-0**-000001'),
+        ('test_firebase_002', 'BANK', '020', 2006::bigint, '1002-0**-000001'),
+        ('test_firebase_002', 'BANK', '088', 2007::bigint, '110-0**-000002'),
+        ('test_firebase_002', 'BANK', '088', 2008::bigint, '110-0**-000003'),
+        ('test_firebase_004', 'BANK', '088', 2009::bigint, '110-0**-000001'),
+        ('test_firebase_004', 'BANK', '020', 2010::bigint, '1002-0**-000001'),
+        ('test_firebase_004', 'BANK', '088', 2011::bigint, '110-0**-000002'),
+        ('test_firebase_004', 'BANK', '088', 2012::bigint, '110-0**-000003'),
+        ('test_firebase_005', 'BANK', '088', 2013::bigint, '110-0**-000001'),
+        ('test_firebase_005', 'BANK', '020', 2014::bigint, '1002-0**-000001'),
+        ('test_firebase_005', 'BANK', '088', 2015::bigint, '110-0**-000002'),
+        ('test_firebase_005', 'BANK', '088', 2016::bigint, '110-0**-000003'),
+        ('test_firebase_007', 'BANK', '088', 2025::bigint, '110-0**-000001'),
+        ('test_firebase_007', 'BANK', '020', 2026::bigint, '1002-0**-000001'),
+        ('test_firebase_007', 'BANK', '088', 2027::bigint, '110-0**-000002'),
+        ('test_firebase_007', 'BANK', '088', 2028::bigint, '110-0**-000003'),
         ('test_firebase_002', 'BANK', '088', 2003::bigint, '110-0**-000001'),
         ('test_firebase_002', 'BANK', '020', 2004::bigint, '1002-0**-000001'),
         ('test_firebase_003', 'BANK', '088', 2005::bigint, '110-0**-000001'),
@@ -81,3 +101,69 @@ WHERE NOT EXISTS (
       AND x.institution_type = v.institution_type
       AND x.external_account_id = v.external_account_id
 );
+
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+FROM (
+    VALUES
+        ('test_firebase_001', 2001, 'INCOME'),
+        ('test_firebase_001', 2002, 'SALARY'),
+        ('test_firebase_001', 2003, 'EMERGENCY'),
+        ('test_firebase_001', 2004, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+ON CONFLICT DO NOTHING;
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+FROM (
+    VALUES
+        ('test_firebase_002', 2005, 'INCOME'),
+        ('test_firebase_002', 2006, 'SALARY'),
+        ('test_firebase_002', 2007, 'EMERGENCY'),
+        ('test_firebase_002', 2008, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+ON CONFLICT DO NOTHING;
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+FROM (
+    VALUES
+        ('test_firebase_004', 2009, 'INCOME'),
+        ('test_firebase_004', 2010, 'SALARY'),
+        ('test_firebase_004', 2011, 'EMERGENCY'),
+        ('test_firebase_004', 2012, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+ON CONFLICT DO NOTHING;
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+FROM (
+    VALUES
+        ('test_firebase_005', 2013, 'INCOME'),
+        ('test_firebase_005', 2014, 'SALARY'),
+        ('test_firebase_005', 2015, 'EMERGENCY'),
+        ('test_firebase_005', 2016, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+ON CONFLICT DO NOTHING;
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+FROM (
+    VALUES
+        ('test_firebase_007', 2025, 'INCOME'),
+        ('test_firebase_007', 2026, 'SALARY'),
+        ('test_firebase_007', 2027, 'EMERGENCY'),
+        ('test_firebase_007', 2028, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+ON CONFLICT DO NOTHING;
