@@ -118,5 +118,108 @@ WHEN NOT MATCHED THEN
     INSERT (ACCOUNT_ID, USER_ID, BANK_CODE, ACCOUNT_NUMBER, ACCOUNT_NAME, BALANCE, ACCOUNT_STATUS, OPENED_AT)
     VALUES (s.aid, s.uid, s.bc, s.an, s.name, s.bal, 'ACTIVE', TIMESTAMP '2024-01-15 09:00:00');
 
+-- Clearing Accounts
+MERGE INTO bank_account t
+USING (
+    SELECT 2439999 account_id,
+           999999 user_id,
+           '243' bank_code,
+           '243-9999-000001' account_number,
+           UNISTR('\D55C\AD6D\D22C\C790\C99D\AD8C \C815\C0B0\ACC4\C88C') account_name,
+           1000000000 balance
+    FROM dual
+) s
+ON (t.account_id = s.account_id)
+WHEN NOT MATCHED THEN
+INSERT (
+    account_id,
+    user_id,
+    bank_code,
+    account_number,
+    account_name,
+    balance,
+    account_status,
+    opened_at
+)
+VALUES (
+    s.account_id,
+    s.user_id,
+    s.bank_code,
+    s.account_number,
+    s.account_name,
+    s.balance,
+    'ACTIVE',
+    TIMESTAMP '2024-01-15 09:00:00'
+);
+
+MERGE INTO bank_account t
+USING (
+    SELECT 2479999 account_id,
+           999999 user_id,
+           '247' bank_code,
+           '247-9999-000001' account_number,
+           UNISTR('NH\D22C\C790\C99D\AD8C \C815\C0B0\ACC4\C88C') account_name,
+           1000000000 balance
+    FROM dual
+) s
+ON (t.account_id = s.account_id)
+WHEN NOT MATCHED THEN
+INSERT (
+    account_id,
+    user_id,
+    bank_code,
+    account_number,
+    account_name,
+    balance,
+    account_status,
+    opened_at
+)
+VALUES (
+    s.account_id,
+    s.user_id,
+    s.bank_code,
+    s.account_number,
+    s.account_name,
+    s.balance,
+    'ACTIVE',
+    TIMESTAMP '2024-01-15 09:00:00'
+);
+
+-- Boss Account
+MERGE INTO bank_account t
+USING (
+    SELECT 9999 account_id,
+           999 user_id,
+           '088' bank_code,
+           '999-999-9999' account_number,
+           UNISTR('\C0AC\C7A5\B2D8\D1B5\C7A5') account_name,
+           10000000000 balance
+    FROM dual
+) s
+ON (t.account_id = s.account_id)
+WHEN MATCHED THEN
+    UPDATE SET t.balance = s.balance
+WHEN NOT MATCHED THEN
+INSERT (
+    account_id,
+    user_id,
+    bank_code,
+    account_number,
+    account_name,
+    balance,
+    account_status,
+    opened_at
+)
+VALUES (
+    s.account_id,
+    s.user_id,
+    s.bank_code,
+    s.account_number,
+    s.account_name,
+    s.balance,
+    'ACTIVE',
+    TIMESTAMP '2024-01-15 09:00:00'
+);
+
 COMMIT;
 EXIT;
