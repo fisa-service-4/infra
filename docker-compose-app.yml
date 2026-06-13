@@ -30,7 +30,7 @@ services:
   # =========================
 
   service-backend:
-    image: ghcr.io/fisa-service-4/service-backend:develop
+    image: infra-service-backend
 #    build:
 #      context: ../service-backend
     container_name: service-backend
@@ -46,7 +46,7 @@ services:
       - ./secrets/firebase.json:/app/firebase.json:ro
 
   service-ai-server:
-    image: ghcr.io/fisa-service-4/service-ai-server:develop
+    image: infra-service-ai-server
 #    build:
 #      context: ../service-ai-server
     container_name: service-ai-server

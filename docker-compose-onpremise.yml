@@ -163,6 +163,7 @@ services:
       - postgres-analytics
       - postgres-vector
       - postgres-log
+      - postgres-operational
     #      - ollama
     env_file:
       - ../service-ai-server/.env.onpremise
