@@ -19,7 +19,7 @@
 
 | Variable 이름 | 위치 |
 |---|---|
-| `TRANSACTION_URL` | service-frontend → Settings → Variables → `TRANSACTION_URL` (이미 있으면 확인만) |
+| `AWS_TRANSACTION_URL` | service-frontend → Settings → Variables → `AWS_TRANSACTION_URL` = `http://10.10.4.15:8083` |
 
 ---
 
