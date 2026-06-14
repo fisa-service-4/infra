@@ -160,18 +160,18 @@ EOF
 # 1. Bastion 접속
 ssh -i ~/.ssh/bastion04 3-16@us.loclx.io -p 22044
 
-# 2-A. woorifis (서비스 서버 — docker-compose-app)
-ssh -i team04-jooho.pem ubuntu@172.21.33.217
-
-# 2-B. woorifis2 (코어 서버 — docker-compose-core)
+# 2-A. woorifis2 (서비스 서버 — docker-compose-app)
 ssh -i team04-jooho.pem ubuntu@172.21.33.245
+
+# 2-B. woorifis (코어 서버 — docker-compose-core)
+ssh -i team04-jooho.pem ubuntu@172.21.33.217
 ```
 
 ---
 
-### 3-1. PostgreSQL Seed (woorifis — 172.21.33.217)
+### 3-1. PostgreSQL Seed (woorifis2 — 172.21.33.245)
 
-**실행 서버:** woorifis (`172.21.33.217`)  
+**실행 서버:** woorifis2 (`172.21.33.245`)  
 - 이유: docker-compose-app.yml의 `postgres` 컨테이너가 이 서버에 있음
 
 ```bash
@@ -195,9 +195,9 @@ docker exec -i postgres psql -U admin -d finance \
 
 ---
 
-### 3-2. Oracle Seed (woorifis2 — 172.21.33.245)
+### 3-2. Oracle Seed (woorifis — 172.21.33.217)
 
-**실행 서버:** woorifis2 (`172.21.33.245`)  
+**실행 서버:** woorifis (`172.21.33.217`)  
 - 이유: docker-compose-core.yml의 `oracle` 컨테이너가 이 서버에 있음
 
 ```bash

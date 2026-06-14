@@ -1,5 +1,5 @@
 #!/bin/bash
-# woorifis (172.21.33.217) — docker-compose-app.yml 용
+# woorifis2 (172.21.33.245) — docker-compose-app.yml 용
 # PostgreSQL(postgres container) 시드 실행
 set -euo pipefail
 
