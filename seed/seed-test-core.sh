@@ -29,7 +29,8 @@ cleanup_oracle() {
     shift
     echo "  [Cleanup] ${user_pass%%/*}..."
     {
-        printf "WHENEVER SQLERROR EXIT SQL.SQLCODE\n"
+        # CONTINUE: 테이블이 없어도 (ORA-00942) 무시하고 계속 진행
+        printf "WHENEVER SQLERROR CONTINUE\n"
         for sql in "$@"; do
             printf "%s\n" "$sql"
         done
