@@ -145,3 +145,86 @@ EOF
 - RDS_PASSWORD는 절대 파일/커밋에 포함 금지
 - RDS에 `operational` 스키마가 없으면 seed 전에 Spring Boot 한 번 기동해서 JPA DDL로 스키마 생성 필요
 - Oracle healthy 상태 확인 후 seed 실행: `docker ps | grep oracle`
+
+---
+
+## Task 3 — 테스트 환경 (OpenStack) Seed 데이터 적재
+
+### 접속 경로
+
+```
+[로컬] → Bastion (us.loclx.io:22044) → woorifis / woorifis2
+```
+
+```bash
+# 1. Bastion 접속
+ssh -i ~/.ssh/bastion04 3-16@us.loclx.io -p 22044
+
+# 2-A. woorifis (서비스 서버 — docker-compose-app)
+ssh -i team04-jooho.pem ubuntu@172.21.33.217
+
+# 2-B. woorifis2 (코어 서버 — docker-compose-core)
+ssh -i team04-jooho.pem ubuntu@172.21.33.245
+```
+
+---
+
+### 3-1. PostgreSQL Seed (woorifis — 172.21.33.217)
+
+**실행 서버:** woorifis (`172.21.33.217`)  
+- 이유: docker-compose-app.yml의 `postgres` 컨테이너가 이 서버에 있음
+
+```bash
+# woorifis 접속 후
+cd ~/infra && git pull
+bash seed/seed-test-app.sh
+```
+
+적재 파일 순서 (FK 의존성 고정):
+```
+00_alter_schema.sql → 01_seed_users.sql → 02_seed_user_profile.sql
+→ 03_seed_pin_auth.sql → 04_seed_virtual_salary.sql
+→ 05_seed_linked_accounts.sql → 07_seed_contracts.sql
+```
+
+적재 확인:
+```bash
+docker exec -i postgres psql -U admin -d finance \
+  -c "SELECT user_id, user_name, email FROM operational.users LIMIT 5;"
+```
+
+---
+
+### 3-2. Oracle Seed (woorifis2 — 172.21.33.245)
+
+**실행 서버:** woorifis2 (`172.21.33.245`)  
+- 이유: docker-compose-core.yml의 `oracle` 컨테이너가 이 서버에 있음
+
+```bash
+# woorifis2 접속 후
+cd ~/infra && git pull
+bash seed/seed-test-core.sh
+```
+
+적재 파일:
+```
+01_seed_bank.sql  (BANK/bank123)
+02_seed_stock.sql (STOCK/stock123)
+03_seed_trans.sql (TRANS/trans123)
+04_seed_card.sql  (CARD/card123)
+```
+
+적재 확인:
+```bash
+# 은행 계좌
+docker exec -i oracle sqlplus -S BANK/bank123@XEPDB1 <<'EOF'
+SELECT ACCOUNT_ID, USER_ID, BALANCE FROM BANK_ACCOUNT WHERE ROWNUM <= 5;
+EXIT;
+EOF
+
+# 카드
+docker exec -i oracle sqlplus -S CARD/card123@XEPDB1 <<'EOF'
+SELECT CARD_ID, USER_ID FROM CARD_MASTER WHERE ROWNUM <= 5;
+EXIT;
+EOF
+```
