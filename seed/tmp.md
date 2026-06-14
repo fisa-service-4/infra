@@ -11,7 +11,7 @@
 
 | Secret 이름 | 값 | 대상 레포 |
 |---|---|---|
-| `AWS_SSH_PRIVATE_KEY` | `team04-jooho.pem` 파일 전체 내용 (`cat team04-jooho.pem`) | 4개 전체 |
+| `AWS_SSH_PRIVATE_KEY` | `FLON-RSA-KEY.pem` 파일 전체 내용 (`cat FLON-RSA-KEY.pem`) | 4개 전체 |
 | `AWS_BASTION_HOST` | `43.203.52.141` | 4개 전체 |
 | `AWS_BASTION_USER` | `ubuntu` | 4개 전체 |
 
@@ -29,7 +29,7 @@ AWS.md 기준 APP-2A / MYDATA-2A는 완료. **2C 서버들은 별도 확인 필�
 
 ```bash
 # Bastion 경유 APP-2C 접속
-ssh -i team04-jooho.pem -o ProxyCommand="ssh -i team04-jooho.pem -W %h:%p ubuntu@43.203.52.141" ubuntu@172.16.11.10
+ssh -i FLON-RSA-KEY.pem -o ProxyCommand="ssh -i FLON-RSA-KEY.pem -W %h:%p ubuntu@43.203.52.141" ubuntu@172.16.11.10
 
 # APP-2C에서 확인/준비
 docker --version          # Docker 설치 확인
@@ -40,7 +40,7 @@ git clone <infra-repo-url> ~/infra
 
 ```bash
 # MYDATA-2C (172.16.21.10) 동일하게 확인
-ssh -i team04-jooho.pem -o ProxyCommand="ssh -i team04-jooho.pem -W %h:%p ubuntu@43.203.52.141" ubuntu@172.16.21.10
+ssh -i FLON-RSA-KEY.pem -o ProxyCommand="ssh -i FLON-RSA-KEY.pem -W %h:%p ubuntu@43.203.52.141" ubuntu@172.16.21.10
 ```
 
 ---
@@ -76,8 +76,8 @@ docker compose -f ~/infra/docker-compose-prod-app.yml ps
 
 ```bash
 # 1. Bastion 경유 APP-2A 접속
-ssh -i team04-jooho.pem \
-  -o ProxyCommand="ssh -i team04-jooho.pem -W %h:%p ubuntu@43.203.52.141" \
+ssh -i FLON-RSA-KEY.pem \
+  -o ProxyCommand="ssh -i FLON-RSA-KEY.pem -W %h:%p ubuntu@43.203.52.141" \
   ubuntu@172.16.10.10
 
 # 2. APP-2A 안에서
