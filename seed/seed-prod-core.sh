@@ -30,6 +30,28 @@ run_oracle() {
         "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB"
 }
 
+cleanup_oracle() {
+    local user_pass=$1
+    shift
+    echo "  [Cleanup] ${user_pass%%/*}..."
+    {
+        printf "WHENEVER SQLERROR CONTINUE\n"
+        for sql in "$@"; do
+            printf "%s\n" "$sql"
+        done
+        printf "COMMIT;\nEXIT;\n"
+    } | docker exec -i -e NLS_LANG="KOREAN_KOREA.AL32UTF8" \
+        "$ORA_CONTAINER" sqlplus -S "$user_pass@$ORA_PDB"
+}
+
+echo "=== [PROD-CORE] Oracle Cleanup ==="
+# FK 의존 순서 역순으로 삭제: child → parent
+cleanup_oracle "CARD/card123"   "DELETE FROM CARD_APPROVAL;" "DELETE FROM CARD_MASTER;"
+cleanup_oracle "TRANS/trans123" "DELETE FROM USER_ACCOUNT_MAPPING;" "DELETE FROM USER_MASTER;"
+cleanup_oracle "STOCK/stock123" "DELETE FROM STOCK_HOLDING;" "DELETE FROM SECURITIES_ACCOUNT;"
+cleanup_oracle "BANK/bank123"   "DELETE FROM ACCOUNT_BALANCE_HISTORY;" "DELETE FROM TRANSFER_TRANSACTION;" "DELETE FROM BANK_TRANSACTION;" "DELETE FROM BANK_ACCOUNT;"
+echo "=== [PROD-CORE] Oracle Cleanup Done ==="
+
 echo "=== [PROD-CORE] Oracle Seed ==="
 run_oracle "BANK/bank123"   "$SCRIPT_DIR/oracle/01_seed_bank.sql"
 run_oracle "STOCK/stock123" "$SCRIPT_DIR/oracle/02_seed_stock.sql"
