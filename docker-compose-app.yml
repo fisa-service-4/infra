@@ -26,6 +26,97 @@ services:
       - "6379:6379"
 
   # =========================
+  # CODE QUALITY
+  # =========================
+  #
+  # [SonarQube 서버 활성화 방법]
+  # 아래 sonar-db, sonarqube 블록의 '#' 주석을 제거하면 바로 사용 가능.
+  # 기동 후 http://localhost:9000 접속 (초기 계정: admin / admin)
+  #
+  # ------------------------------------------------------------------
+  # [각 서비스별 build.gradle 또는 설정 파일에 추가해야 할 내용]
+  #
+  # ★ service-backend / mydata-server (Java/Spring Boot)
+  #
+  #   [build.gradle] plugins 블록에 추가:
+  #     id 'org.sonarqube' version '5.1.0.4882'
+  #
+  #   [build.gradle] 최하단에 sonar 블록 추가:
+  #     sonar {
+  #         properties {
+  #             property "sonar.projectKey", "service-backend"  // 서비스마다 고유하게
+  #             property "sonar.host.url", "http://localhost:9000"
+  #             property "sonar.token", "<SonarQube UI에서 발급한 토큰>"
+  #         }
+  #     }
+  #
+  #   [실행 명령]:
+  #     ./gradlew sonar
+  #
+  # ------------------------------------------------------------------
+  #
+  # ★ service-ai-server (Python/FastAPI)
+  #   Gradle 플러그인 없음 → sonar-scanner CLI 또는 sonar-project.properties 사용
+  #
+  #   [service-ai-server/sonar-project.properties 파일 생성]:
+  #     sonar.projectKey=service-ai-server
+  #     sonar.projectName=service-ai-server
+  #     sonar.sources=src
+  #     sonar.language=py
+  #     sonar.host.url=http://localhost:9000
+  #     sonar.token=<SonarQube UI에서 발급한 토큰>
+  #
+  #   [실행 명령] (sonar-scanner CLI 설치 필요):
+  #     cd service-ai-server && sonar-scanner
+  #
+  # ------------------------------------------------------------------
+  #
+  # ★ service-frontend (Next.js/TypeScript)
+  #   Gradle 없음 → sonar-project.properties 사용
+  #
+  #   [service-frontend/sonar-project.properties 파일 생성]:
+  #     sonar.projectKey=service-frontend
+  #     sonar.projectName=service-frontend
+  #     sonar.sources=src
+  #     sonar.exclusions=node_modules/**,**/*.test.ts,**/*.spec.ts
+  #     sonar.typescript.lcov.reportPaths=coverage/lcov.info
+  #     sonar.host.url=http://localhost:9000
+  #     sonar.token=<SonarQube UI에서 발급한 토큰>
+  #
+  #   [실행 명령]:
+  #     cd service-frontend && sonar-scanner
+  #
+  # ------------------------------------------------------------------
+
+  # sonar-db:
+  #   image: postgres:16
+  #   container_name: sonar-db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: sonar
+  #     POSTGRES_PASSWORD: sonar
+  #     POSTGRES_DB: sonarqube
+  #   volumes:
+  #     - sonar_db_data:/var/lib/postgresql/data
+
+  # sonarqube:
+  #   image: sonarqube:lts-community
+  #   container_name: sonarqube
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - sonar-db
+  #   environment:
+  #     SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonarqube
+  #     SONAR_JDBC_USERNAME: sonar
+  #     SONAR_JDBC_PASSWORD: sonar
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - sonarqube_data:/opt/sonarqube/data
+  #     - sonarqube_extensions:/opt/sonarqube/extensions
+  #     - sonarqube_logs:/opt/sonarqube/logs
+
+  # =========================
   # APPLICATIONS
   # =========================
 
@@ -89,3 +180,7 @@ services:
 
 volumes:
   postgres_data:
+  # sonar_db_data:
+  # sonarqube_data:
+  # sonarqube_extensions:
+  # sonarqube_logs:
