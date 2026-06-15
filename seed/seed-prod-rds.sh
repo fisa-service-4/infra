@@ -26,11 +26,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 run_psql() {
     local file=$1
     echo "  [RDS] $(basename "$file")..."
+    # prod RDS는 public 스키마 사용 (currentSchema=operational 미적용)
+    sed 's/SET search_path TO operational/SET search_path TO public/g' "$file" | \
     PGPASSWORD="$RDS_PASSWORD" psql \
         -h "$RDS_HOST" -p "$RDS_PORT" \
         -U "$RDS_USER" -d "$RDS_DB" \
         -v ON_ERROR_STOP=1 \
-        -f - < "$file"
+        -f -
 }
 
 # 명시적 순서 고정 — FK 의존성: users → user_profile → linked_accounts → contracts
