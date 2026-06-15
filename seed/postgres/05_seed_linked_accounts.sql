@@ -16,8 +16,6 @@ FROM (
     VALUES
         ('test_firebase_001', 'BANK', '088', 2001::bigint, '110-0**-000001'),
         ('test_firebase_001', 'BANK', '020', 2002::bigint, '1002-0**-000001'),
-        ('test_firebase_001', 'BANK', '088', 2001::bigint, '110-0**-000001'),
-        ('test_firebase_001', 'BANK', '020', 2002::bigint, '1002-0**-000001'),
         ('test_firebase_001', 'BANK', '088', 2003::bigint, '110-0**-000002'),
         ('test_firebase_001', 'BANK', '088', 2004::bigint, '110-0**-000003'),
         ('test_firebase_002', 'BANK', '088', 2005::bigint, '110-0**-000001'),
@@ -114,7 +112,10 @@ FROM (
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
 SELECT u.user_id, lfa.linked_account_id, v.m_type
@@ -127,7 +128,10 @@ FROM (
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
 SELECT u.user_id, lfa.linked_account_id, v.m_type
@@ -140,7 +144,10 @@ FROM (
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
 SELECT u.user_id, lfa.linked_account_id, v.m_type
@@ -153,7 +160,10 @@ FROM (
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
 SELECT u.user_id, lfa.linked_account_id, v.m_type
@@ -166,4 +176,7 @@ FROM (
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
