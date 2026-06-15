@@ -104,7 +104,7 @@ WHERE NOT EXISTS (
 
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
-SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+SELECT u.user_id, lfa.linked_account_id, v.m_type
 FROM (
     VALUES
         ('test_firebase_001', 2001, 'INCOME'),
@@ -117,7 +117,7 @@ JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_ac
 ON CONFLICT DO NOTHING;
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
-SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+SELECT u.user_id, lfa.linked_account_id, v.m_type
 FROM (
     VALUES
         ('test_firebase_002', 2005, 'INCOME'),
@@ -130,7 +130,7 @@ JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_ac
 ON CONFLICT DO NOTHING;
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
-SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+SELECT u.user_id, lfa.linked_account_id, v.m_type
 FROM (
     VALUES
         ('test_firebase_004', 2009, 'INCOME'),
@@ -143,7 +143,7 @@ JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_ac
 ON CONFLICT DO NOTHING;
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
-SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+SELECT u.user_id, lfa.linked_account_id, v.m_type
 FROM (
     VALUES
         ('test_firebase_005', 2013, 'INCOME'),
@@ -156,7 +156,7 @@ JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_ac
 ON CONFLICT DO NOTHING;
 
 INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
-SELECT u.user_id, lfa.linked_account_id, v.m_type::operational.account_mapping_type
+SELECT u.user_id, lfa.linked_account_id, v.m_type
 FROM (
     VALUES
         ('test_firebase_007', 2025, 'INCOME'),
