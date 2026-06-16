@@ -10,6 +10,12 @@ envs/*.env
 
 secrets/firebase.json
 
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
 # =========================
 # IDE
 # =========================
@@ -57,3 +63,9 @@ prometheus-data/
 # =========================
 tmp/
 temp/
+
+# =========================
+# Docs with credentials
+# =========================
+# Contains plain-text DB passwords (Oracle bank/card schema credentials)
+docs/seed-data.md

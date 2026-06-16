@@ -18,3 +18,13 @@ VALUES
     ('test_firebase_009', 'chaewon@test.com', '$2b$10$GtYeMhO44tVhRHMulLRw2OcWUR1YFpRm3vVT1amLQmBCxzLcHDA8.', '임채원', '01090123456', 'USER', 'ACTIVE', true, true, true, NOW()),
     ('test_firebase_010', 'yejin@test.com',   '$2b$10$GtYeMhO44tVhRHMulLRw2OcWUR1YFpRm3vVT1amLQmBCxzLcHDA8.', '한예진', '01011223344', 'USER', 'ACTIVE', true, true, true, NOW())
 ON CONFLICT (firebase_uid) DO NOTHING;
+
+-- Integration test dedicated accounts (NOT personas — do not use for demo data)
+-- password: Test1234! (same BCrypt hash as personas)
+INSERT INTO users (firebase_uid, email, password_hash, user_name, phone_number,
+                   role, status, notification_consent_yn, terms_consent_yn,
+                   mydata_consent_yn, created_at)
+VALUES
+    ('integration_test_user1', 'integration.user1@test.com', '$2b$10$GtYeMhO44tVhRHMulLRw2OcWUR1YFpRm3vVT1amLQmBCxzLcHDA8.', '통합테스트1', '01099990001', 'USER', 'ACTIVE', true, true, true, NOW()),
+    ('integration_test_user2', 'integration.user2@test.com', '$2b$10$GtYeMhO44tVhRHMulLRw2OcWUR1YFpRm3vVT1amLQmBCxzLcHDA8.', '통합테스트2', '01099990002', 'USER', 'ACTIVE', true, true, true, NOW())
+ON CONFLICT (firebase_uid) DO NOTHING;

@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.integration'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
+    testImplementation 'io.rest-assured:rest-assured:5.5.0'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    systemProperties = System.properties
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showExceptions true
+        showCauses true
+    }
+    timeout = java.time.Duration.ofMinutes(5)
+}

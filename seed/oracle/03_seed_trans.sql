@@ -16,7 +16,10 @@ USING (
     SELECT 28, 28, 'test_firebase_007', UNISTR('\C870\BBFC\C11C'), '01078901234' FROM DUAL UNION ALL
     SELECT 29, 29, 'test_firebase_008', UNISTR('\C724\D558\C900'), '01089012345' FROM DUAL UNION ALL
     SELECT 30, 30, 'test_firebase_009', UNISTR('\C784\CC44\C6D0'), '01090123456' FROM DUAL UNION ALL
-    SELECT 31, 31, 'test_firebase_010', UNISTR('\D55C\C608\C9C4'), '01011223344' FROM DUAL
+    SELECT 31, 31, 'test_firebase_010', UNISTR('\D55C\C608\C9C4'), '01011223344' FROM DUAL UNION ALL
+    -- Integration test dedicated users (user_id 9001/9002)
+    SELECT 9001, 9001, 'integration_test_user1', UNISTR('\D1B5\D569\D14C\C2A4\D2B81'), '01099990001' FROM DUAL UNION ALL
+    SELECT 9002, 9002, 'integration_test_user2', UNISTR('\D1B5\D569\D14C\C2A4\D2B82'), '01099990002' FROM DUAL
 ) s ON (t.user_id = s.u_id)
 WHEN NOT MATCHED THEN
     INSERT (user_id, x_user_id, firebase_uid, user_name, phone_number, linked_at)
@@ -77,7 +80,13 @@ USING (
     SELECT 1017, 'STOCK', 30, 30 FROM DUAL UNION ALL
     SELECT 1018, 'STOCK', 30, 30 FROM DUAL UNION ALL
     SELECT 1019, 'STOCK', 31, 31 FROM DUAL UNION ALL
-    SELECT 1020, 'STOCK', 31, 31 FROM DUAL
+    SELECT 1020, 'STOCK', 31, 31 FROM DUAL UNION ALL
+    -- Integration test dedicated account mappings
+    SELECT 9001, 'BANK',  9001, 9001 FROM DUAL UNION ALL
+    SELECT 9002, 'BANK',  9001, 9001 FROM DUAL UNION ALL
+    SELECT 9003, 'BANK',  9002, 9002 FROM DUAL UNION ALL
+    SELECT 9004, 'BANK',  9002, 9002 FROM DUAL UNION ALL
+    SELECT 9901, 'STOCK', 9001, 9001 FROM DUAL
 ) s ON (t.account_id = s.acid AND t.account_type = s.atype)
 WHEN NOT MATCHED THEN
     INSERT (account_id, account_type, user_id, x_user_id)
