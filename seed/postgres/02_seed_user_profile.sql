@@ -13,7 +13,9 @@ FROM (
         ('test_firebase_007', false, 'DEVELOPER',    '9403115', 'SKT'),
         ('test_firebase_008', true,  'TRANSLATOR',   '9709016', 'KT'),
         ('test_firebase_009', true,  'DESIGNER',     '9112047', 'LGU'),
-        ('test_firebase_010', false, 'MARKETER',     '9802258', 'SKT')
+        ('test_firebase_010', false, 'MARKETER',     '9802258', 'SKT'),
+        ('integration_test_user1', true, 'DEVELOPER', '9001011', 'SKT'),
+        ('integration_test_user2', true, 'DESIGNER',  '9001022', 'KT')
 ) AS v(firebase_uid, freelancer_yn, job_type, resident_number_front, telecom)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 ON CONFLICT (user_id) DO NOTHING;

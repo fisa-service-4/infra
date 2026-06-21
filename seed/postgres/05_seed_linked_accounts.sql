@@ -51,7 +51,12 @@ FROM (
         ('test_firebase_009', 'BANK', '088', 2017::bigint, '110-0**-000001'),
         ('test_firebase_009', 'BANK', '020', 2018::bigint, '1002-0**-000001'),
         ('test_firebase_010', 'BANK', '088', 2019::bigint, '110-0**-000001'),
-        ('test_firebase_010', 'BANK', '020', 2020::bigint, '1002-0**-000001')
+        ('test_firebase_010', 'BANK', '020', 2020::bigint, '1002-0**-000001'),
+        -- Integration test dedicated accounts (Oracle user_id 9001/9002)
+        ('integration_test_user1', 'BANK', '088', 9001::bigint, '110-9**1-000001'),
+        ('integration_test_user1', 'BANK', '020', 9002::bigint, '1002-9**1-000001'),
+        ('integration_test_user2', 'BANK', '088', 9003::bigint, '110-9**2-000001'),
+        ('integration_test_user2', 'BANK', '020', 9004::bigint, '1002-9**2-000001')
 ) AS v(firebase_uid, institution_type, institution_code, external_account_id, account_masking)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 WHERE NOT EXISTS (
@@ -90,7 +95,9 @@ FROM (
         ('test_firebase_009', 'SECURITIES', '243', 1017::bigint, '**000001-01'),
         ('test_firebase_009', 'SECURITIES', '247', 1018::bigint, '302-00**-0001-01'),
         ('test_firebase_010', 'SECURITIES', '243', 1019::bigint, '**000001-01'),
-        ('test_firebase_010', 'SECURITIES', '247', 1020::bigint, '302-00**-0001-01')
+        ('test_firebase_010', 'SECURITIES', '247', 1020::bigint, '302-00**-0001-01'),
+        -- Integration test dedicated accounts
+        ('integration_test_user1', 'SECURITIES', '243', 9901::bigint, '9**00001-01')
 ) AS v(firebase_uid, institution_type, institution_code, external_account_id, account_masking)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 WHERE NOT EXISTS (
@@ -173,6 +180,22 @@ FROM (
         ('test_firebase_007', 2026, 'SALARY'),
         ('test_firebase_007', 2027, 'EMERGENCY'),
         ('test_firebase_007', 2028, 'STOCK')
+) AS v(firebase_uid, external_id, m_type)
+JOIN users u ON u.firebase_uid = v.firebase_uid
+JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
+WHERE NOT EXISTS (
+    SELECT 1 FROM account_mapping am
+    WHERE am.user_id = u.user_id AND am.mapping_type = v.m_type
+);
+
+INSERT INTO account_mapping (user_id, linked_account_id, mapping_type)
+SELECT u.user_id, lfa.linked_account_id, v.m_type
+FROM (
+    VALUES
+        ('integration_test_user1', 9001, 'INCOME'),
+        ('integration_test_user1', 9002, 'SALARY'),
+        ('integration_test_user2', 9003, 'INCOME'),
+        ('integration_test_user2', 9004, 'SALARY')
 ) AS v(firebase_uid, external_id, m_type)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 JOIN linked_financial_account lfa ON lfa.user_id = u.user_id AND lfa.external_account_id = v.external_id
