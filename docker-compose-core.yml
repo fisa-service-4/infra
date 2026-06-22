@@ -56,74 +56,6 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
   # =========================
-  # CODE QUALITY
-  # =========================
-  #
-  # [SonarQube 서버 활성화 방법]
-  # 아래 sonar-db, sonarqube 블록의 '#' 주석을 제거하면 바로 사용 가능.
-  # 기동 후 http://localhost:9000 접속 (초기 계정: admin / admin)
-  #
-  # ------------------------------------------------------------------
-  # [각 서비스별 build.gradle에 추가해야 할 내용]
-  # (bank-server, stock-server, transaction-server 모두 동일한 방법)
-  #
-  # ★ bank-server / stock-server / transaction-server (Java/Spring Boot)
-  #
-  #   [build.gradle] plugins 블록에 추가:
-  #     id 'org.sonarqube' version '5.1.0.4882'
-  #
-  #   [build.gradle] 최하단에 sonar 블록 추가:
-  #     sonar {
-  #         properties {
-  #             property "sonar.projectKey", "bank-server"  // 서비스마다 고유하게 변경
-  #             property "sonar.host.url", "http://localhost:9000"
-  #             property "sonar.token", "<SonarQube UI에서 발급한 토큰>"
-  #         }
-  #     }
-  #
-  #   [실행 명령] (각 서비스 디렉토리에서 실행):
-  #     cd bank-server && ./gradlew sonar
-  #     cd stock-server && ./gradlew sonar
-  #     cd transaction-server && ./gradlew sonar
-  #
-  # ------------------------------------------------------------------
-  #
-  # [토큰 발급 방법]
-  # 1. http://localhost:9000 접속 후 admin/admin 로그인
-  # 2. My Account → Security → Generate Tokens
-  # 3. 발급된 토큰을 위 sonar.token 또는 -Dsonar.token=<토큰> 으로 사용
-  #
-  # ------------------------------------------------------------------
-
-  # sonar-db:
-  #   image: postgres:16
-  #   container_name: sonar-db
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_USER: sonar
-  #     POSTGRES_PASSWORD: sonar
-  #     POSTGRES_DB: sonarqube
-  #   volumes:
-  #     - sonar_db_data:/var/lib/postgresql/data
-
-  # sonarqube:
-  #   image: sonarqube:lts-community
-  #   container_name: sonarqube
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - sonar-db
-  #   environment:
-  #     SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonarqube
-  #     SONAR_JDBC_USERNAME: sonar
-  #     SONAR_JDBC_PASSWORD: sonar
-  #   ports:
-  #     - "9000:9000"
-  #   volumes:
-  #     - sonarqube_data:/opt/sonarqube/data
-  #     - sonarqube_extensions:/opt/sonarqube/extensions
-  #     - sonarqube_logs:/opt/sonarqube/logs
-
-  # =========================
   # APPLICATIONS
   # =========================
 
@@ -173,7 +105,3 @@ services:
 
 volumes:
   oracle_data:
-  # sonar_db_data:
-  # sonarqube_data:
-  # sonarqube_extensions:
-  # sonarqube_logs:
