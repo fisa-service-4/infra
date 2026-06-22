@@ -17,6 +17,7 @@ WHERE u.firebase_uid IN (
     'test_firebase_001', 'test_firebase_002', 'test_firebase_003',
     'test_firebase_004', 'test_firebase_005', 'test_firebase_006',
     'test_firebase_007', 'test_firebase_008', 'test_firebase_009',
-    'test_firebase_010'
+    'test_firebase_010',
+    'integration_test_user1', 'integration_test_user2'
 )
 ON CONFLICT (user_id) DO NOTHING;

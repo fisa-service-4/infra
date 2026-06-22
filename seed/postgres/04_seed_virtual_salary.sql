@@ -5,7 +5,7 @@ SET search_path TO operational;
 
 INSERT INTO virtual_salary_setting
     (user_id, target_salary, payday, emergency_target_amount,
-     investment_ratio, emergency_ratio, priority_order, updated_at)
+     investment_amount, emergency_amount, priority_order, updated_at)
 SELECT u.user_id, v.target_salary, v.payday, v.emergency_target_amount,
        NULL, NULL, NULL, NOW()
 FROM (
@@ -19,7 +19,9 @@ FROM (
         ('test_firebase_007', 4000000.00, 20, 8000000.00),
         ('test_firebase_008', 2200000.00, 15, 4500000.00),
         ('test_firebase_009', 3000000.00, 25, 6000000.00),
-        ('test_firebase_010', 3800000.00, 10, 7500000.00)
+        ('test_firebase_010', 3800000.00, 10, 7500000.00),
+        ('integration_test_user1', 3000000.00, 25, 6000000.00),
+        ('integration_test_user2', 3000000.00, 25, 6000000.00)
 ) AS v(firebase_uid, target_salary, payday, emergency_target_amount)
 JOIN users u ON u.firebase_uid = v.firebase_uid
 ON CONFLICT (user_id) DO NOTHING;
